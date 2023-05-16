@@ -1,7 +1,7 @@
 {
   "id": "custom-compendium-banners",
   "title": "Custom Compendium Banners",
-  "description": "Adds the ability to change default compendium banner images for each document type.",
+  "description": "Adds the ability to change default compendium banner images for each document type or remove banners altogether.",
   "authors": [
     {
       "name": "Phenomen",
