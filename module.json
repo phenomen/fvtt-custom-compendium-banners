@@ -17,5 +17,5 @@
   "esmodules": ["index.js"],
   "url": "https://github.com/phenomen/fvtt-custom-compendium-banners",
   "manifest": "https://raw.githubusercontent.com/phenomen/fvtt-custom-compendium-banners/module.json",
-  "download": "https://github.com/phenomen/fvtt-custom-compendium-banners/releases/download/latest/custom-compendium-banners.zip"
+  "download": "https://github.com/phenomen/fvtt-custom-compendium-banners/archive/refs/heads/main.zip"
 }
