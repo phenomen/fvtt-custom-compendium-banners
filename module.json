@@ -1,0 +1,21 @@
+{
+  "id": "custom-compendium-banners",
+  "title": "Custom Compendium Banners",
+  "description": "Adds the ability to change default compendium banner images for each document type.",
+  "authors": [
+    {
+      "name": "Phenomen",
+      "discord": "phenomen#1337"
+    }
+  ],
+  "version": "1.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11",
+    "maximum": "11"
+  },
+  "esmodules": ["index.js"],
+  "url": "https://github.com/phenomen/fvtt-custom-compendium-banners",
+  "manifest": "https://raw.githubusercontent.com/phenomen/fvtt-custom-compendium-banners/module.json",
+  "download": "https://github.com/phenomen/fvtt-custom-compendium-banners/releases/download/latest/custom-compendium-banners.zip"
+}
