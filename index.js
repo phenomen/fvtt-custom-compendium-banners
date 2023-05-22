@@ -14,7 +14,7 @@ const TYPES = [
 
 Hooks.once("init", async () => {
   game.settings.register(MODULE_ID, "RemoveBanners", {
-    name: `Remove All Banners`,
+    name: `Remove Banner Images`,
     hint: `All compendium banner images will be removed.`,
     type: Boolean,
     default: false,
@@ -28,7 +28,23 @@ Hooks.once("init", async () => {
     name: `Banners Height`,
     hint: `Height of compendium items. Use 55px for compact view. Default: 70px`,
     type: Number,
+    range: {
+      min: 20,
+      max: 100,
+      step: 5,
+    },
     default: 70,
+    scope: "world",
+    config: true,
+    restricted: true,
+    requiresReload: true,
+  });
+
+  game.settings.register(MODULE_ID, "HideSource", {
+    name: `Hide Compendium Source`,
+    hint: `Compendium source in the bottom left corner will be hidden.`,
+    type: Boolean,
+    default: false,
     scope: "world",
     config: true,
     restricted: true,
@@ -63,7 +79,17 @@ Hooks.once("ready", async () => {
     ".compendium-sidebar .directory-item.compendium"
   );
 
+  const sourceItems = document.querySelectorAll(
+    ".compendium-sidebar .directory-item.compendium .compendium-footer"
+  );
+
   compendiumItems.forEach((item) => {
     item.style.height = `${game.settings.get(MODULE_ID, "BannerHeight")}px`;
   });
+
+  if (game.settings.get(MODULE_ID, "HideSource")) {
+    sourceItems.forEach((item) => {
+      item.style.display = "none";
+    });
+  }
 });

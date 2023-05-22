@@ -6,3 +6,4 @@ Foundry VTT module that adds the ability to change default compendium banner ima
 
 **Manifest:** https://raw.githubusercontent.com/phenomen/fvtt-custom-compendium-banners/main/module.json
 
+![screenshot](https://raw.githubusercontent.com/phenomen/fvtt-custom-compendium-banners/main/screenshot.webp)]
