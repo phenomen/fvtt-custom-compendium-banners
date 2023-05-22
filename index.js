@@ -24,11 +24,11 @@ Hooks.once("init", async () => {
     requiresReload: true,
   });
 
-  game.settings.register(MODULE_ID, "CompactBanners", {
-    name: `Compact Banners`,
-    hint: `Decrease height of compendium banner items.`,
-    type: Boolean,
-    default: false,
+  game.settings.register(MODULE_ID, "BannerHeight", {
+    name: `Banners Height`,
+    hint: `Height of compendium items. Use 55px for compact view. Default: 70px`,
+    type: Number,
+    default: 70,
     scope: "world",
     config: true,
     restricted: true,
@@ -59,13 +59,11 @@ Hooks.once("init", async () => {
 });
 
 Hooks.once("ready", async () => {
-  if (game.settings.get(MODULE_ID, "CompactBanners")) {
-    const compendiumItems = document.querySelectorAll(
-      ".compendium-sidebar .directory-item.compendium"
-    );
+  const compendiumItems = document.querySelectorAll(
+    ".compendium-sidebar .directory-item.compendium"
+  );
 
-    compendiumItems.forEach((item) => {
-      item.style.height = "55px";
-    });
-  }
+  compendiumItems.forEach((item) => {
+    item.style.height = `${game.settings.get(MODULE_ID, "BannerHeight")}px`;
+  });
 });
