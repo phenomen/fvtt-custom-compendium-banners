@@ -12,7 +12,7 @@ const TYPES = [
   "Scene",
 ];
 
-const debouncedRender = debounce(() => ui.sidebar?.render(false), 50)
+const debouncedRender = debounce(() => ui.sidebar?.render(false), 50);
 
 Hooks.once("init", () => {
   game.settings.register(MODULE_ID, "RemoveBanners", {
