@@ -12,7 +12,9 @@ const TYPES = [
   "Scene",
 ];
 
-Hooks.once("init", async () => {
+const debouncedRender = debounce(() => ui.sidebar?.render(false), 50);
+
+Hooks.once("init", () => {
   game.settings.register(MODULE_ID, "RemoveBanners", {
     name: `Remove Banner Images`,
     hint: `All compendium banner images will be removed.`,
@@ -21,7 +23,8 @@ Hooks.once("init", async () => {
     scope: "world",
     config: true,
     restricted: true,
-    requiresReload: true,
+    requiresReload: false,
+    onChange: debouncedRender
   });
 
   game.settings.register(MODULE_ID, "BannerHeight", {
@@ -37,7 +40,8 @@ Hooks.once("init", async () => {
     scope: "world",
     config: true,
     restricted: true,
-    requiresReload: true,
+    requiresReload: false,
+    onChange: debouncedRender
   });
 
   game.settings.register(MODULE_ID, "HideSource", {
@@ -48,7 +52,8 @@ Hooks.once("init", async () => {
     scope: "world",
     config: true,
     restricted: true,
-    requiresReload: true,
+    requiresReload: false,
+    onChange: debouncedRender
   });
 
   for (const t of TYPES) {
@@ -56,31 +61,25 @@ Hooks.once("init", async () => {
       name: `${t} Banner`,
       hint: `Compendium banner image for ${t} document type.`,
       type: String,
-      default: CONFIG[t].compendiumBanner,
+      default: deepClone(CONFIG[t].compendiumBanner),
       filePicker: "image",
       scope: "world",
       config: true,
       restricted: true,
-      requiresReload: true,
+      requiresReload: false,
+      onChange: (value) => {
+        CONFIG[t].compendiumBanner = value;
+        debouncedRender();
+      }
     });
 
     CONFIG[t].compendiumBanner = game.settings.get(MODULE_ID, t);
   }
-
-  if (game.settings.get(MODULE_ID, "RemoveBanners")) {
-    for (const t of TYPES) {
-      CONFIG[t].compendiumBanner = null;
-    }
-  }
 });
 
-Hooks.once("ready", async () => {
+function applyChanges() {
   const compendiumItems = document.querySelectorAll(
     ".compendium-sidebar .directory-item.compendium"
-  );
-
-  const sourceItems = document.querySelectorAll(
-    ".compendium-sidebar .directory-item.compendium .compendium-footer"
   );
 
   compendiumItems.forEach((item) => {
@@ -88,8 +87,32 @@ Hooks.once("ready", async () => {
   });
 
   if (game.settings.get(MODULE_ID, "HideSource")) {
+    const sourceItems = document.querySelectorAll(
+      ".compendium-sidebar .directory-item.compendium .compendium-footer"
+    );
+  
     sourceItems.forEach((item) => {
       item.style.display = "none";
     });
   }
+
+  if (game.settings.get(MODULE_ID, "RemoveBanners")) {
+    const images = document.querySelectorAll(
+      ".compendium-sidebar .directory-item.compendium .compendium-banner"
+    );
+  
+    images.forEach((item) => {
+      item.style.display = "none";
+    });
+  }
+}
+
+Hooks.on("renderSidebarTab", (tab) => {
+  if (!(tab instanceof CompendiumDirectory)) return;
+  applyChanges();
+});
+
+Hooks.on("changeSidebarTab", (tab) => {
+  if (!(tab instanceof CompendiumDirectory)) return;
+  applyChanges();
 });
