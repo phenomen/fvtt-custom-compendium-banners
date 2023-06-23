@@ -24,7 +24,7 @@ Hooks.once("init", () => {
     config: true,
     restricted: true,
     requiresReload: false,
-    onChange: debouncedRender
+    onChange: debouncedRender,
   });
 
   game.settings.register(MODULE_ID, "BannerHeight", {
@@ -41,7 +41,7 @@ Hooks.once("init", () => {
     config: true,
     restricted: true,
     requiresReload: false,
-    onChange: debouncedRender
+    onChange: debouncedRender,
   });
 
   game.settings.register(MODULE_ID, "HideSource", {
@@ -53,7 +53,20 @@ Hooks.once("init", () => {
     config: true,
     restricted: true,
     requiresReload: false,
-    onChange: debouncedRender
+    onChange: debouncedRender,
+  });
+
+  game.settings.register(MODULE_ID, "LabelAlignment", {
+    name: `Label Alignment`,
+    hint: `The side to which compendium label will be aligned.`,
+    type: String,
+    choices: { start: "Left", center: "Center", end: "Right" },
+    default: "center",
+    scope: "world",
+    config: true,
+    restricted: true,
+    requiresReload: false,
+    onChange: debouncedRender,
   });
 
   for (const t of TYPES) {
@@ -70,7 +83,7 @@ Hooks.once("init", () => {
       onChange: (value) => {
         CONFIG[t].compendiumBanner = value;
         debouncedRender();
-      }
+      },
     });
 
     CONFIG[t].compendiumBanner = game.settings.get(MODULE_ID, t);
@@ -83,6 +96,10 @@ function applyChanges() {
   );
 
   compendiumItems.forEach((item) => {
+    item.style.alignItems = game.settings.get(MODULE_ID, "LabelAlignment");
+  });
+
+  compendiumItems.forEach((item) => {
     item.style.height = `${game.settings.get(MODULE_ID, "BannerHeight")}px`;
   });
 
@@ -90,7 +107,7 @@ function applyChanges() {
     const sourceItems = document.querySelectorAll(
       ".compendium-sidebar .directory-item.compendium .compendium-footer"
     );
-  
+
     sourceItems.forEach((item) => {
       item.style.display = "none";
     });
@@ -100,7 +117,7 @@ function applyChanges() {
     const images = document.querySelectorAll(
       ".compendium-sidebar .directory-item.compendium .compendium-banner"
     );
-  
+
     images.forEach((item) => {
       item.style.display = "none";
     });
